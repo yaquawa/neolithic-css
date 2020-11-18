@@ -1,0 +1,234 @@
+@forward "sass:list";
+@use "sass:list";
+@use "sass:meta";
+@use "sass:math";
+@use "sass:map";
+@use "sass:string";
+@use "cast" as *;
+@use "guard" as *;
+@use "helpers" as *;
+
+// convert to a map
+@function to-map($list) {
+  $map: ();
+  $i: 1;
+
+  @each $item in $list {
+    $map: map.merge($map, ($i: $item));
+    $i: $i + 1;
+  }
+
+  @return $map;
+}
+
+
+@function cast-to-number($i) {
+  @return 101;
+}
+
+
+@function map-to-number($list) {
+  @return map($list, meta.get-function('to-number'));
+}
+
+// map
+@function map($list, $mapperFunction) {
+  $new-list: [];
+  @each $item in $list {
+    $new-list: list.append($new-list, meta.call($mapperFunction, $item));
+  }
+
+  @return $new-list;
+}
+
+// removes the given values from the list.
+@function reject($list, $values...) {
+  $new-list: [];
+
+  @each $item in $list {
+    @each $item-to-be-reject in $values {
+      @if $item-to-be-reject != $item {
+        $new-list: list.append($new-list, $item);
+      }
+    }
+  }
+
+  @return $new-list;
+}
+
+
+// shift list
+@function shift($list) {
+  $new-list: [];
+  $i: 1;
+
+  @each $item in $list {
+    @if ($i > 1) {
+      $new-list: list.append($new-list, $item);
+    }
+    $i: $i + 1;
+  }
+
+  @return $new-list;
+}
+
+
+// first item of the list
+@function first($list) {
+  @return list.nth($list, 1);
+}
+
+
+// last item of the list
+@function last($list) {
+  @return list.nth($list, list.length($list));
+}
+
+
+// reverse a list
+@function reverse($list) {
+  $new-list: [];
+  $i: list.length($list);
+
+  @while ($i > 0) {
+    $new-list: list.append($new-list, list.nth($list, $i));
+    $i: $i - 1;
+  }
+
+  @return $new-list;
+}
+
+
+// flatten a list via a given depth.
+// if $depth is null means depth is infinity.
+@function flatten($list, $depth: null) {
+  @if not is-list($list) {
+    @return $list;
+  }
+
+  $new-list: [];
+  @each $item in $list {
+    @if is-list($item) and ($depth == null or $depth > 1) {
+      $item: flatten($item, if($depth == null, null, $depth - 1));
+    }
+
+    $new-list: list.join($new-list, $item);
+  }
+
+  @return $new-list;
+}
+
+
+//|---------------------------------------------------------------------------
+//| Sorting Functions
+//|---------------------------------------------------------------------------
+
+@function sort-numeric($a, $b) {
+  @return $a < $b;
+}
+
+@function rsort-numeric($a, $b) {
+  @return $a > $b;
+}
+
+@function sort-exactly($a, $b, $order-list) {
+  $a-index: list.index($order-list, $a);
+  $b-index: list.index($order-list, $b);
+
+  @if is-null($a-index) or is-null($b-index) {
+    @return true;
+  }
+
+  @return $b-index > $a-index;
+}
+
+// sort with revered order.
+@function rsort($list, $compare-function: 'sort-numeric',$compare-function-args...) {
+  @return reverse(sort($list, $compare-function, $compare-function-args...));
+}
+
+/// Sort the given list.
+/// @param {List}             $list
+/// @param {Function|string}  $compare-function
+/// @param {Arglist}          $compare-function-args
+/// @return {List}
+@function sort($list, $compare-function: 'sort-numeric', $compare-function-args...) {
+  @if meta.type-of($compare-function) == 'string' {
+    $compare-function: meta.get-function($compare-function);
+  }
+
+  $less: ();
+  $equal: ();
+  $large: ();
+
+  @if list.length($list) > 1 {
+    $seed: list.nth($list, math.ceil(list.length($list) / 2));
+    $separator: list.separator($list);
+
+    @each $item in $list {
+      @if $item == $seed {
+        $equal: list.append($equal, $item, $separator);
+      } @else if (meta.call($compare-function, $item, $seed, $compare-function-args...)) {
+        $less: list.append($less, $item, $separator);
+      } @else if not (meta.call($compare-function,$item, $seed,$compare-function-args...)) {
+        $large: list.append($large, $item, $separator);
+      }
+    }
+
+    @return list.join(
+            list.join(sort($less, $compare-function, $compare-function-args...), $equal),
+            sort($large, $compare-function, $compare-function-args...)
+    );
+  }
+
+  @return $list;
+}
+
+
+@function implode($list, $glue: '') {
+  $result: null;
+
+  @for $i from 1 through list.length($list) {
+    $item: list.nth($list, $i);
+
+    @if is-list($item) {
+      $result: string.unquote("#{$result}#{$glue}#{implode($item, $glue)}");
+    } @else {
+      $result: string.unquote("#{$result}#{$glue}#{$item}");
+    }
+  }
+
+  @if $result != null {
+    $result: string.slice($result, string.length($glue) + 1, -1);
+  }
+
+  @return $result;
+}
+
+
+// @author hugogiraudel.com
+// https://hugogiraudel.com/2013/08/08/advanced-sass-list-functions/#slicing-a-list
+@function slice($list, $start: 1, $end: list.length($list)) {
+  $result: null;
+  $separator: list.separator($list);
+
+  @if not is-number($start) and is-number($end) {
+    @warn "Either $start or $end are not a number for `slice`.";
+  } @else if $start > $end {
+    @warn "The start index has to be lesser than or equals to the end index for `slice`.";
+  } @else if $start < 1 or $end < 1 {
+    @warn "List indexes must be non-zero integers for `slice`.";
+  } @else if $start > list.length($list) {
+    @warn "List index is #{$start} but list is only #{list.length($list)} item long for `slice`.";
+  } @else if $end > list.length($list) {
+    @warn "List index is #{$end} but list is only #{list.length($list)} item long for `slice`.";
+  } @else {
+    $result: [];
+
+    @for $i from $start through $end {
+      $result: list.append($result, list.nth($list, $i), $separator);
+    }
+  }
+
+  @return $result;
+}

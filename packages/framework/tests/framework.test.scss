@@ -1,0 +1,32 @@
+@use "../src" as nc with
+(
+    $breakpoints: (
+        xs: 320px,
+        sm: 550px,
+        md: 768px,
+    ),
+    $modules: [
+        'background',
+        'typography',
+        'spacing',
+        'layout',
+        'grid',
+        'flexbox',
+        'border',
+        'transition',
+        'effect',
+        'transform',
+        'interactivity',
+    ],
+    $colors: [ 'black','white','gray', 'red' ],
+    $extra-colors: (
+        primary: #0667B7,
+        blue: (
+            50: #f7fafd,
+            100: #eaf2f9,
+        )
+    ),
+    $mobile-first: true,
+);
+
+@include nc.build;

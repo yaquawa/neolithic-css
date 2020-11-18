@@ -1,0 +1,77 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
+@use "~@neolithic-css/toolkit/src/functions/list";
+@use "../config/config";
+@use "sass:map";
+
+@mixin add-range-utility(// {number}
+    $from,
+
+    // {number}
+    $to,
+
+    // {number}
+    $step,
+
+    // {string|string[]}
+    $property-name,
+
+    // {string|string[]}
+    $property-name-alias: null,
+
+    // {string|string[]}
+    $property-value-alias: null,
+
+    // {bool}
+    $fluid: true,
+
+    // {string[]}
+    $breakpoints: map.keys(config.$breakpoints),
+
+    // {string|string[]}
+    $property-value-template: '_$i_',
+
+    // {string}
+    $post-selector: null,
+) {
+    $property-name: to-list($property-name);
+    $property-name-alias: to-list(default($property-name-alias, $property-name));
+
+    @each $index, $_property-name in list.to-map($property-name) {
+        $template: if(is-string($property-value-template), $property-value-template, list.nth($property-value-template, $index));
+
+        @if $fluid {
+            @include add-fluid-utility(
+                $property-name: $_property-name,
+                $property-value: range($from, $to, $step, $template),
+                $property-name-alias: list.nth($property-name-alias, $index),
+                $step: $step,
+                $post-selector: $post-selector,
+            );
+        } @else {
+            @include add-simple-utility(
+                $property-name: $_property-name,
+                $property-value: range($from, $to, $step, $template),
+                $property-name-alias: list.nth($property-name-alias, $index),
+                $property-value-alias: if(is-nested-list($property-value-alias), list.nth($property-value-alias, $index), $property-value-alias),
+                $breakpoints: $breakpoints,
+                $post-selector: $post-selector,
+            );
+        }
+    }
+}
+
+
+@function is-nested-list($list) {
+    @if not is-list($list) {
+        @return false;
+    }
+
+    @each $item in $list {
+        @if not is-list($item) {
+            @return false;
+        }
+    }
+
+    @return true;
+}

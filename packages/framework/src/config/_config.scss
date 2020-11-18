@@ -1,0 +1,6 @@
+@forward "~@neolithic-css/toolkit/src/config";
+@forward "color";
+
+$colors: [ 'white', 'black', 'gray', 'red', 'green', 'blue', ] !default;
+
+$modules: [ 'grid', 'spacing', 'typography', ] !default;

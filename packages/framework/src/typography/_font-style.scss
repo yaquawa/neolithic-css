@@ -1,0 +1,12 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-values: [ 'italic', 'normal' ] !default;
+$property-name-alias: fs !default;
+$property-value-alias: null !default;
+
+@include add-simple-utility(
+    $property-name: font-style,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: $property-value-alias,
+);

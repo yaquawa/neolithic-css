@@ -1,0 +1,48 @@
+@use "../functions/cast" as *;
+
+$start-shrinking-width: 1024px !default;
+$stop-shrinking-width: 550px !default;
+
+@mixin fluid-property(
+  $properties,
+  $max-amount,
+  $min-amount,
+  $max-viewport-width: $start-shrinking-width,
+  $min-viewport-width: $stop-shrinking-width,
+  $important: true,
+) {
+  $properties: to-list($properties);
+  $max-amount: to-number($max-amount);
+  $min-amount: to-number($min-amount);
+  $max-viewport-width: to-number($max-viewport-width);
+  $min-viewport-width: to-number($min-viewport-width);
+  $important: if($important, ' !important', '');
+
+  @media (min-width: #{$min-viewport-width}) {
+    & {
+      $amount-difference: $max-amount - $min-amount;
+      $viewport-width-difference: $max-viewport-width - $min-viewport-width;
+      @each $property in $properties {
+        #{$property}: calc(#{$min-amount} + ((1vw - #{$min-viewport-width / 100}) * #{100 * $amount-difference / $viewport-width-difference}))#{$important};
+      }
+    }
+  }
+
+  // Stop font scaling above $max-viewport-width
+  @media (min-width: #{$max-viewport-width}) {
+    & {
+      @each $property in $properties {
+        #{$property}: $max-amount#{$important};
+      }
+    }
+  }
+
+  // Set the minimum amount under $min-viewport-width
+  @media (max-width: #{$min-viewport-width}) {
+    & {
+      @each $property in $properties {
+        #{$property}: $min-amount#{$important};
+      }
+    }
+  }
+}

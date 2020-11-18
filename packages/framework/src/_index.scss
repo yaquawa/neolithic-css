@@ -1,0 +1,26 @@
+@forward "config/config";
+@use "sass:meta";
+@use "sass:list";
+@use "config/config";
+@use "~@neolithic-css/toolkit/src/functions" as *;
+@use "~@neolithic-css/toolkit" as toolkit;
+
+@each $module in config.$modules {
+    $config: ();
+    $module-name: $module;
+
+    @if is-list($module) {
+        @if list.length($module) != 2 {
+            @error meta.inspect($module) + ' should have 2 elements.';
+        }
+
+        $module-name: list.nth($module, 1);
+        $config: list.nth($module, 2);
+    }
+
+    @include meta.load-css($module-name, $with: $config);
+}
+
+@mixin build {
+    @include toolkit.build;
+}

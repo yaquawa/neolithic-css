@@ -1,0 +1,16 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "~@neolithic-css/toolkit/src/config";
+@use "~@neolithic-css/toolkit/src/functions/helpers" as *;
+
+$property-name-alias: 'fz' !default;
+$fluid: true !default;
+$step: 1px !default;
+$from: 10px !default;
+$to: 64px !default;
+
+@include add-fluid-utility(
+    $property-name: font-size,
+    $property-value: range($from, $to, $step),
+    $property-name-alias: $property-name-alias,
+    $step: $step,
+);

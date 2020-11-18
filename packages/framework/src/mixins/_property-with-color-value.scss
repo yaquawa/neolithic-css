@@ -1,0 +1,42 @@
+@use "../config/config";
+@use "../config/color";
+@use "sass:map";
+@use "sass:meta";
+@use "sass:list";
+@use "~@neolithic-css/toolkit" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
+
+$colors: meta.module-variables(color);
+$extra-colors: map.get($colors, 'extra-colors');
+$colors: map.merge(map.remove($colors, 'extra-colors'), $extra-colors);
+
+@mixin property-with-color-value(
+    $property-name,
+    $property-name-alias: null,
+) {
+    $property-name-alias: default($property-name-alias, $property-name);
+
+    @each $color-name in list.join(config.$colors, map.keys($extra-colors)) {
+        $color: map.get($colors, $color-name);
+
+        @if is-map($color) {
+            @each $color-modifier, $color-value in $color {
+                $value-alias: if($color-modifier == 'default', $color-name, $color-name + '.' + $color-modifier);
+
+                @include add-simple-utility(
+                    $property-name: $property-name,
+                    $property-name-alias: $property-name-alias,
+                    $property-value: $color-value,
+                    $property-value-alias: $value-alias,
+                );
+            }
+        } @else {
+            @include add-simple-utility(
+                $property-name: $property-name,
+                $property-name-alias: $property-name-alias,
+                $property-value: $color,
+                $property-value-alias: $color-name,
+            );
+        }
+    }
+}

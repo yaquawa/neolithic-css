@@ -1,0 +1,37 @@
+@use "sass:meta";
+
+@function is($variable, $type) {
+  @return meta.type-of($variable) == $type;
+}
+
+@function is-list($variable) {
+  @return is($variable, 'list');
+}
+
+@function is-string($variable) {
+  @return is($variable, 'string');
+}
+
+@function is-number($variable) {
+  @return is($variable, 'number');
+}
+
+@function is-bool($variable) {
+  @return is($variable, 'bool');
+}
+
+@function is-null($variable) {
+  @return is($variable, 'null');
+}
+
+@function is-function($variable) {
+  @return is($variable, 'function');
+}
+
+@function is-map($variable) {
+  @return is($variable, 'map');
+}
+
+@function is-arglist($variable) {
+  @return is($variable, 'arglist');
+}

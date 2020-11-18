@@ -1,0 +1,64 @@
+@use "../src/functions" as *;
+@use "../src/toolkit" as * with
+(
+    $breakpoints: (
+        sm: 500px,
+        md: 900px,
+        lg: 1300px,
+        xs: 300px,
+    )
+);
+
+
+$simple-utilities: (
+    (
+        property-name: background-color,
+        property-value: (#68D391, #F6E05E, #dc3545),
+        property-name-alias: 'bg',
+        property-value-alias: (green, yellow, red)
+    ),
+    (
+        property-name: display,
+        property-value: (grid, block, inline-block),
+        property-name-alias: 'd',
+    ),
+    (
+        property-name: grid-template-columns,
+        property-value: range(1, 12, 1, 'repeat(_$i_, minmax(0, 1fr))'),
+        property-name-alias: 'grid-cols',
+        property-value-alias: range(1, 12, 1)
+    ),
+    (
+        property-name: gap,
+        property-value: range(0, 2.5rem, 0.25rem),
+        property-value-alias: range(0, 10, 1),
+        property-name-delimiter: '-',
+        query-delimiter: '|',
+    ),
+);
+
+
+@include add-simple-utilities($simple-utilities...);
+
+
+@include add-compound-utility(
+    $properties: (
+        padding-top: 10px,
+        padding-bottom: 20px,
+    ),
+    $class: 'ptb',
+    $breakpoints: (sm, xs)
+);
+
+
+@include add-fluid-utility(
+    $property-name: font-size,
+    $property-value: range(10px, 50px, 2px),
+    $property-name-alias: 'fz',
+    $step: 2px,
+    $pre-selector: '.home ',
+    $post-selector: '>table',
+);
+
+
+@include build;

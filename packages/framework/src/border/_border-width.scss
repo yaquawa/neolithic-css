@@ -1,0 +1,20 @@
+@use "../mixins/add-range-utility" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
+
+$property-names: [ border, border-top, border-right, border-bottom, border-left ];
+$property-name-aliases: [ null, null, null, null, null ] !default;
+
+$from: 0 !default;
+$to: 5 !default;
+$step: 1 !default;
+
+@include add-range-utility(
+    $from: $from,
+    $to: $to,
+    $step: $step,
+    $property-name: $property-names,
+    $property-name-alias: $property-name-aliases,
+    $property-value-alias: range($from, $to, $step),
+    $property-value-template: '_$i_px solid',
+    $fluid: false,
+);

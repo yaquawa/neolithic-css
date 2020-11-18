@@ -1,0 +1,25 @@
+{
+  "name": "@neolithic-css/toolkit",
+  "version": "1.3.10",
+  "description": "CSS utilities generation toolkit written in Sass.",
+  "main": "src/_toolkit.scss",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaquawa/neolithic-css.git",
+    "directory": "packages/toolkit"
+  },
+  "keywords": [
+    "css",
+    "utility",
+    "tailwind css"
+  ],
+  "author": "yaquawa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yaquawa/neolithic-css.git/issues"
+  },
+  "homepage": "https://github.com/yaquawa/neolithic-css.git#readme",
+  "files": [
+    "src"
+  ]
+}

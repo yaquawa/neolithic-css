@@ -1,0 +1,22 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "../mixins/add-range-utility" as *;
+
+$property-alias: transition !default;
+$property-value: [
+    none,
+    all,
+    'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform',
+    'background-color, border-color, color, fill, stroke',
+    opacity,
+    box-shadow,
+    transform,
+] !default;
+$property-value-alias: [ 'none', 'all', 'standard', 'colors', 'opacity', 'shadow', 'transform' ] !default;
+
+@include add-simple-utility(
+    $property-name: transition-property,
+    $property-name-alias: $property-alias,
+    $property-value: $property-value,
+    $property-value-alias: $property-value-alias,
+    $breakpoints: [],
+);

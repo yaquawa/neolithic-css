@@ -1,0 +1,12 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-values: [ 'center', 'flex-start', 'flex-end', 'start', 'end', 'space-between', 'space-around' ] !default;
+$property-name-alias: null !default;
+$property-value-alias: null !default;
+
+@include add-simple-utility(
+    $property-name: justify-content,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: $property-value-alias,
+);

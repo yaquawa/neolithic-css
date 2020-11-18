@@ -1,0 +1,16 @@
+@use "../mixins/add-range-utility" as *;
+
+$property-name-alias: null !default;
+
+$from: 1 !default;
+$to: 12 !default;
+$step: 1 !default;
+
+@include add-range-utility(
+    $from: $from,
+    $to: $to,
+    $step: $step,
+    $property-name: order,
+    $property-name-alias: $property-name-alias,
+    $fluid: false,
+);

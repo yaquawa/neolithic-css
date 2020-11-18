@@ -1,0 +1,59 @@
+@use "sass:map";
+@use "sass:list";
+@use "sass:meta";
+@use "string";
+
+// Return a default value if the given variable is null
+@function default($variable, $default) {
+  @return if($variable == null, $default, $variable);
+}
+
+// function to strip units
+@function strip-unit($number) {
+  @return $number / ($number * 0 + 1);
+}
+
+// Compose a map from keys and values
+@function combine($keys, $values) {
+  $map: ();
+
+  @for $i from 1 through (list.length($keys)) {
+    $key: list.nth($keys, $i);
+    $value: list.nth($values, $i);
+    $map: map.merge($map, ($key : $value));
+  }
+
+  @return $map;
+}
+
+
+// make a list
+@function range(
+  $from,
+  $to,
+  $step,
+  $template: null,
+) {
+  $list: [];
+  $i: $to;
+
+  @while ($i >= $from) {
+    $item: $i;
+    @if ($template) {
+      $item: string.replace($template, '_$i_', $i);
+    }
+    $list: list.append($list, $item);
+    $i: $i - $step;
+  }
+
+  @return $list;
+}
+
+
+
+
+
+
+
+
+

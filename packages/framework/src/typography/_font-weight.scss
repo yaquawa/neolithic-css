@@ -1,0 +1,13 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
+
+$property-values: range(100, 900, 100) !default;
+$property-name-alias: fw !default;
+$property-value-alias: [ "black", "extrabold", "bold", "semibold", "medium", "normal", "light", "thin", "hairline" ] !default;
+
+@include add-simple-utility(
+    $property-name: font-weight,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: $property-value-alias,
+);

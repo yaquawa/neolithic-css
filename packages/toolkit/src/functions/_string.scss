@@ -1,0 +1,53 @@
+@forward "sass:string";
+@use "sass:string";
+@use "sass:list";
+
+/// https://css-tricks.com/snippets/sass/str-replace-function/
+/// Replace `$search` with `$replace` in `$string`
+/// @author Hugo Giraudel
+/// @param {String} $string - Initial string
+/// @param {String} $search - Substring to replace
+/// @param {String} $replace ('') - New value
+/// @return {String} - Updated string
+@function replace($string, $search, $replace: '') {
+  $index: string.index($string, $search);
+
+  @if $index {
+    @return string.slice($string, 1, $index - 1) + $replace + replace(string.slice($string, $index + string.length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+
+@function escape-css-identifiers($string) {
+  $special-characters: ('!' '"' '#' '$' '%' '&' "'" '(' ')' '*' '+' ',' '-' '.' '/' ':' ';' '<' '=' '>' '?' '@' '[' ']' '^' '`' '{' '|' '}' '~');
+
+  @each $special-character in $special-characters {
+    $string: replace($string, $special-character, ('\\' + $special-character));
+  }
+
+  @return $string;
+}
+
+
+/// Split the given string into list.
+/// @param {String} $string     - Initial string
+/// @param {String} $separator  - Separator
+/// @return {List}              - Split string
+@function split($string, $separator) {
+  $list: [];
+  $index: string.index($string, $separator);
+
+  @while $index != null {
+    $item: string.slice($string, 1, $index - 1);
+    $list: list.append($list, $item);
+    $string: string.slice($string, $index + 1);
+    $index: string.index($string, $separator);
+  }
+
+  $list: list.append($list, $string);
+
+  @return $list;
+}
+

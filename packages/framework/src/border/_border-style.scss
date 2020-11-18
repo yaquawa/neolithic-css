@@ -1,0 +1,21 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-name-aliases: (
+    border-style: null,
+    border-top-style: null,
+    border-bottom-style: null,
+    border-left-style: null,
+    border-right-style: null,
+) !default;
+$property-values: [ 'solid', 'dashed', 'dotted', 'double', 'none' ] !default;
+$property-value-aliases: null !default;
+
+
+@each $property-name, $property-name-alias in $property-name-aliases {
+    @include add-simple-utility(
+        $property-name: $property-name,
+        $property-value: $property-values,
+        $property-name-alias: $property-name-alias,
+        $property-value-alias: $property-value-aliases,
+    );
+}

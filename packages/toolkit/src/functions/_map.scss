@@ -1,0 +1,38 @@
+@forward "sass:map";
+@use "sass:map";
+@use "list";
+
+@function sort-by-key($map, $compare-function: 'sort-numeric', $compare-function-args...) {
+  $sorted-keys: list.sort(map.keys($map), $compare-function, $compare-function-args...);
+  $new-map: ();
+
+  @each $key in $sorted-keys {
+    $value: map.get($map, $key);
+    $new-map: map.merge($new-map, ($key : $value));
+  }
+
+  @return $new-map;
+}
+
+
+@function sort-by-value($map, $compare-function: 'sort-numeric', $compare-function-args...) {
+  $sorted-values: list.sort(map.values($map), $compare-function, $compare-function-args...);
+  $new-map: ();
+
+  @each $value in $sorted-values {
+    $key: get-key-by-value($map, $value);
+    $new-map: map.merge($new-map, ($key: $value));
+  }
+
+  @return $new-map;
+}
+
+
+@function get-key-by-value($map, $value) {
+  @each $k, $v in $map {
+    @if $v == $value {
+      @return $k;
+    }
+  }
+}
+

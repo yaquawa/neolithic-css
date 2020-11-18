@@ -1,0 +1,12 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-values: [ 'left', 'center', 'right', 'justify' ] !default;
+$property-name-alias: 't' !default;
+$property-value-alias: null !default;
+
+@include add-simple-utility(
+    $property-name: text-align,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: $property-value-alias,
+);

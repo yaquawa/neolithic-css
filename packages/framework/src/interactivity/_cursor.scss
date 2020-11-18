@@ -1,0 +1,11 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-name-alias: null !default;
+$property-values: [ auto, default, pointer, wait, text, move, not-allowed ] !default;
+
+@include add-simple-utility(
+    $property-name: cursor,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $breakpoints: [],
+);

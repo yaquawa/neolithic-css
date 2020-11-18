@@ -1,0 +1,8 @@
+@use "../mixins/property-with-color-value" as *;
+
+$property-name-alias: null !default;
+
+@include property-with-color-value(
+    $property-name: border-color,
+    $property-name-alias: $property-name-alias,
+);

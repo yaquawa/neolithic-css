@@ -1,0 +1,43 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "../mixins/add-range-utility" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
+@use "sass:list";
+
+$from: 1 !default;
+$to: 12 !default;
+$step: 1 !default;
+
+$property-names: [ grid-column, grid-column-start, grid-column-end ] !default;
+$property-aliases: [ col-span, col-start, col-end ] !default;
+$property-value-templates: [ 'span _$i_ / span _$i_', '_$i_', '_$i_' ] !default;
+$property-value-aliases: [ range($from, $to, $step), range($from, $to, $step), range($from, $to, $step) ] !default;
+
+
+@include add-range-utility(
+    $from: $from,
+    $to: $to,
+    $step: $step,
+    $property-name: $property-names,
+    $property-name-alias: $property-aliases,
+    $property-value-template: $property-value-templates,
+    $property-value-alias: $property-value-aliases,
+    $fluid: false,
+);
+
+
+$grid-column-end-index: list.index($property-names, grid-column-end);
+
+@if $grid-column-end-index {
+    @include add-simple-utility(
+        $property-name: grid-column-end,
+        $property-value: -1,
+        $property-name-alias: list.nth($property-aliases, $grid-column-end-index),
+        $property-value-alias: 'end',
+    );
+}
+
+@include add-simple-utility(
+    $property-name: grid-column,
+    $property-value: '1 / -1',
+    $class: 'col-full',
+);

@@ -1,0 +1,19 @@
+@use "../mixins/add-range-utility" as *;
+
+$properties: [ gap, column-gap, row-gap ] !default;
+$properties-alias: [ gap, col-gap, row-gap ] !default;
+
+$from: 0px !default;
+$to: 50px !default;
+$step: 5px !default;
+
+$fluid: true !default;
+
+@include add-range-utility(
+    $from: $from,
+    $to: $to,
+    $step: $step,
+    $property-name: $properties,
+    $property-name-alias: $properties-alias,
+    $fluid: $fluid,
+);

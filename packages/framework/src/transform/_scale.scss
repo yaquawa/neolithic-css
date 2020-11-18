@@ -1,0 +1,33 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "../mixins/add-range-utility" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
+@use "../config/config";
+
+$property-alias: scale !default;
+$from: 0 !default;
+$to: 1.5 !default;
+$step: 0.1 !default;
+
+@each $coordinate in [ 'x', 'y' ] {
+    @include add-range-utility(
+        $from: $from,
+        $to: $to,
+        $step: $step,
+        $property-name: --transform-scale-#{$coordinate},
+        $property-name-alias: $property-alias + '-' + $coordinate,
+        $property-value-alias: range($from * 100, $to * 100, $step * 100),
+        $fluid: false,
+        $breakpoints: [],
+    );
+}
+
+@each $property-value in range($from, $to, $step) {
+    @include add-compound-utility(
+        $properties: (
+            --transform-scale-x: $property-value,
+            --transform-scale-y: $property-value,
+        ),
+        $class: $property-alias + config.$property-name-delimiter + $property-value * 100,
+        $breakpoints: [],
+    );
+}

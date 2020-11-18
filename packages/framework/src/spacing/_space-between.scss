@@ -1,0 +1,22 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "../mixins/add-range-utility" as *;
+@use "~@neolithic-css/toolkit/src/functions/list";
+
+$property-names: [ margin-top, margin-left ] !default;
+$property-aliases: [ my, mx ] !default;
+
+$from: 0px !default;
+$to: 30px !default;
+$step: 5px !default;
+
+$fluid: true !default;
+
+@include add-range-utility(
+    $from: $from,
+    $to: $to,
+    $step: $step,
+    $property-name: $property-names,
+    $property-name-alias: $property-aliases,
+    $fluid: $fluid,
+    $post-selector: '> * + *'
+);

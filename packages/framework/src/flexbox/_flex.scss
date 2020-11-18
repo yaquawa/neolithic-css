@@ -1,0 +1,12 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-values: [ '1 1 0%', '1 1 auto', '0 1 auto', 'none' ] !default;
+$property-name-alias: null !default;
+$property-value-alias: [ '1', 'auto', 'initial', 'none' ] !default;
+
+@include add-simple-utility(
+    $property-name: flex,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: $property-value-alias,
+);

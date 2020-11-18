@@ -1,0 +1,12 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-values: [ 'bottom', 'center', 'left', 'left bottom', 'left top', 'right', 'right bottom', 'right top', 'top' ] !default;
+$property-name-alias: 'bg-position' !default;
+$property-value-alias: [ 'bottom', 'center', 'left', 'left-bottom', 'left-top', 'right', 'right-bottom', 'right-top', 'top' ] !default;
+
+@include add-simple-utility(
+    $property-name: background-position,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: $property-value-alias,
+);

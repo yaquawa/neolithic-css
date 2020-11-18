@@ -1,0 +1,12 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-values: [ 'repeat', 'no-repeat', 'repeat-x', 'repeat-y', 'round', 'space' ] !default;
+$property-name-alias: 'bg-repeat' !default;
+$property-value-alias: null !default;
+
+@include add-simple-utility(
+    $property-name: background-repeat,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: $property-value-alias,
+);

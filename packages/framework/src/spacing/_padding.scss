@@ -1,0 +1,29 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "../mixins/add-range-utility" as *;
+@use "~@neolithic-css/toolkit/src/functions/list";
+
+$property-names: [ padding, padding-top, padding-bottom, padding-left, padding-right ] !default;
+$property-aliases: [ p, pt, pb, pl, pr ] !default;
+
+$from: 0px !default;
+$to: 100px !default;
+$step: 5px !default;
+
+$fluid: true !default;
+
+@include add-range-utility(
+    $from: $from,
+    $to: $to,
+    $step: $step,
+    $property-name: $property-names,
+    $property-name-alias: $property-aliases,
+    $fluid: $fluid,
+);
+
+@each $index, $property-name in list.to-map($property-names) {
+    @include add-simple-utility(
+        $property-name: $property-name,
+        $property-value: auto,
+        $property-name-alias: list.nth($property-aliases, $index),
+    );
+}

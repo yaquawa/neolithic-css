@@ -1,0 +1,12 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-values: [ 'block', 'inline-block', 'inline', 'flex', 'inline-flex', 'table' , 'grid', 'inline-grid', 'none' ] !default;
+$property-name-alias: d !default;
+$property-value-alias: null !default;
+
+@include add-simple-utility(
+    $property-name: display,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: $property-value-alias,
+);

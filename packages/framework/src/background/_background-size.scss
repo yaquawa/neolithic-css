@@ -1,0 +1,12 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-values: [ 'auto', 'cover', 'contain' ] !default;
+$property-name-alias: 'bg-size' !default;
+$property-value-alias: null !default;
+
+@include add-simple-utility(
+    $property-name: background-size,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: $property-value-alias,
+);

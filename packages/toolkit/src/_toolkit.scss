@@ -1,0 +1,366 @@
+@forward "config";
+@use "config";
+@use "sass:meta";
+@use "mixins" as *;
+@use "functions" as *;
+@use "functions/map";
+@use "functions/list";
+@use "functions/string";
+
+// [ Terminology ]
+// Simple-Utility vs. Compound-Utility
+//
+// A simple utility contains only one CSS property,
+// while compound-utility contains multiple CSS properties.
+
+
+// All utilities gathered via mixin `add-utility` grouped by breakpoint
+$utilities: (
+    _default_ : [], // the utilities without media query
+);
+
+@mixin add-utility(// {map}
+  $utility,
+  // {string[]}
+  $breakpoints: ['_default_']
+) {
+  @each $breakpoint-name, $breakpoint-value in $breakpoints {
+    $original-breakpoint: map.get($utilities, $breakpoint-name);
+
+    @if ($original-breakpoint == null) {
+      $original-breakpoint: [];
+    }
+
+    $new-breakpoint: list.append($original-breakpoint, $utility);
+
+    $utilities: map.merge($utilities, (
+        $breakpoint-name: $new-breakpoint
+    )) !global;
+  }
+}
+
+@mixin add-fluid-utility(// {string}
+  $property-name,
+
+  // {number|number[]}
+  $property-value,
+
+  // {string}
+  $property-name-alias: null,
+
+  // {string}
+  $property-name-delimiter: config.$property-name-delimiter,
+
+  // {number}
+  $start-shrinking-width: map.get(config.$fluid,'start-shrinking-width'),
+
+  // {number}
+  $stop-shrinking-width: map.get(config.$fluid,'stop-shrinking-width'),
+
+  // {bool}
+  $strip-unit: map.get(config.$fluid,'strip-unit'),
+
+  // {number}
+  $step: map.get(config.$fluid,'step'),
+
+  // {number}
+  $min: map.get(config.$fluid,'min'),
+
+  // {string}
+  $class: null,
+
+  // {string}
+  $post-selector: null,
+
+  // {string}
+  $pre-selector: null,
+
+  // {bool}
+  $important: config.$important,
+) {
+  $property-value: list.map-to-number(to-list($property-value));
+  $property-name-alias: default($property-name-alias, $property-name);
+  $class: default($class, $property-name-alias + $property-name-delimiter);
+  $utility: (
+      type: 'fluid',
+      property-name: $property-name,
+      property-value: $property-value,
+      start-shrinking-width: to-number($start-shrinking-width),
+      stop-shrinking-width: to-number($stop-shrinking-width),
+      strip-unit: $strip-unit,
+      step: to-number($step),
+      min: to-number($min),
+      class: $class,
+      post-selector: $post-selector,
+      pre-selector: $pre-selector,
+      important: $important,
+  );
+
+  @include add-utility($utility);
+}
+
+@mixin add-simple-utility(// {string}
+  $property-name,
+
+  // {number|number[]}
+  $property-value,
+
+  // {string}
+  // This property will be ignored if `$class` is given.
+  $property-name-alias: null,
+
+  // {string|string[]}
+  // This property will be ignored if `$class` is given.
+  $property-value-alias: null,
+
+  // {string}
+  $property-name-delimiter: config.$property-name-delimiter,
+
+  // {string}
+  $query-delimiter: config.$query-delimiter,
+
+  // {string|string[]}
+  $class: null,
+
+  // {string}
+  $post-selector: null,
+
+  // {string}
+  $pre-selector: null,
+
+  // {array}
+  // Generates additional "responsive" utilities for the given breakpoints.
+  $breakpoints: map.keys(config.$breakpoints),
+
+  // {bool}
+  $important: config.$important,
+) {
+  $property-value: to-list($property-value);
+  $property-value-length: list.length($property-value);
+  $property-value-alias: to-list(default($property-value-alias, []));
+  $property-value-alias-length: list.length($property-value-alias);
+  $property-name-alias: default($property-name-alias, $property-name);
+
+  // if the `property-value-alias` less than the `property-value`,
+  // fill it with the `property-value` as a default value.
+  @if ($property-value-alias-length < $property-value-length) {
+    @for $i from ($property-value-alias-length + 1) through $property-value-length {
+      $property-value-alias: list.append($property-value-alias, list.nth($property-value, $i));
+    }
+  }
+
+  @if ($class == null) {
+    $class: [];
+    @each $value-alias in $property-value-alias {
+      $class: list.append($class, $property-name-alias + $property-name-delimiter + $value-alias);
+    }
+  } @else {
+    $class: to-list($class);
+    @if (list.length($class) != $property-value-length) {
+      @error 'The length of $property-value and $class must be the same.';
+    }
+  }
+
+  $utility: (
+      type: 'simple',
+      property-name: $property-name,
+      property-value: $property-value,
+      class: $class,
+      query-delimiter: $query-delimiter,
+      post-selector: $post-selector,
+      pre-selector: $pre-selector,
+      important: $important,
+  );
+
+  @include add-utility($utility, list.append($breakpoints, '_default_'));
+}
+
+
+@mixin add-compound-utility(// {map}
+  $properties,
+
+  // {string}
+  $class,
+
+  // {string}
+  $query-delimiter: config.$query-delimiter,
+
+  // {array}
+  // Generates additional "responsive" utilities for the given breakpoints.
+  $breakpoints: map.keys(config.$breakpoints),
+
+  // {string}
+  $post-selector: null,
+
+  // {string}
+  $pre-selector: null,
+
+  // {bool}
+  $important: config.$important,
+) {
+  $utility: (
+      type: 'compound',
+      properties: $properties,
+      class: $class,
+      query-delimiter: $query-delimiter,
+      post-selector: $post-selector,
+      pre-selector: $pre-selector,
+      important: $important,
+  );
+
+  @include add-utility($utility, list.append($breakpoints, '_default_'));
+}
+
+
+// build the actual styles
+@mixin build() {
+  $sorted-breakpoints: map.sort-by-value(config.$breakpoints, if(config.$mobile-first, 'sort-numeric', 'rsort-numeric'));
+  $sorted-utilities: map.sort-by-key($utilities, 'sort-exactly', list.append(map.keys($sorted-breakpoints), '_default_'));
+  $default-utilities: map.get($sorted-utilities, '_default_');
+  $breakpoint-utilities: map.remove($sorted-utilities, '_default_');
+
+  @each $util in $default-utilities {
+    $type: map.get($util, 'type');
+
+    @if ($type == 'fluid') {
+      @include output-fluid-utility($util);
+    } @else if ($type == 'simple') {
+      @include output-simple-utility($util);
+    } @else if ($type == 'compound') {
+      @include output-compound-utility($util);
+    }
+  }
+
+  @each $breakpoint-name, $utils in $breakpoint-utilities {
+    $device-width: map.get(config.$breakpoints, $breakpoint-name);
+
+    @media (#{if(config.$mobile-first, 'min', 'max')}-width: $device-width) {
+      @each $util in $utils {
+        $type: map.get($util, 'type');
+
+        @if ($type == 'simple') {
+          @include output-simple-utility($util, $breakpoint-name);
+        } @else if ($type == 'compound') {
+          @include output-compound-utility($util, $breakpoint-name);
+        }
+      }
+    }
+  }
+}
+
+
+/// @param {Map} $utility
+@mixin output-fluid-utility($utility) {
+  $step: map.get($utility, 'step');
+  $min: map.get($utility, 'min');
+  $strip-unit: map.get($utility, 'strip-unit');
+  $start-shrinking-width: map.get($utility, 'start-shrinking-width');
+  $stop-shrinking-width: map.get($utility, 'stop-shrinking-width');
+  $property-name: map.get($utility, 'property-name');
+  $property-values: map.get($utility, 'property-value');
+  $class: map.get($utility, 'class');
+  $pre-selector: map.get($utility, 'pre-selector');
+  $post-selector: map.get($utility, 'post-selector');
+  $important: if(map.get($utility, 'important'), ' !important', '');
+
+  @each $property-value in $property-values {
+    $start-value: if($strip-unit, strip-unit($property-value), $property-value);
+    $escaped-classname: string.escape-css-identifiers(#{$class}#{$start-value});
+
+    // e.g. mt:100
+    #{$pre-selector}.#{$escaped-classname}#{$post-selector} {
+      #{$property-name}: #{$property-value}#{$important};
+    }
+
+    $value: $property-value - $step;
+    @while ($value >= $min) {
+      $end-value: if($strip-unit, strip-unit($value), $value);
+      $escaped-classname: string.escape-css-identifiers(#{$class}#{$start-value}#{'~'}#{$end-value});
+
+      // e.g. mt:100~50
+      #{$pre-selector}.#{$escaped-classname}#{$post-selector} {
+        @include fluid-property(
+            $properties: $property-name,
+            $max-amount: $property-value,
+            $min-amount: $value,
+            $max-viewport-width: $start-shrinking-width,
+            $min-viewport-width: $stop-shrinking-width,
+            $important: $important,
+        );
+      }
+
+      $value: $value - $step;
+    }
+  }
+}
+
+
+/// @param {Map}          $utility
+/// @param {String|null}  $breakpoint-name
+@mixin output-simple-utility($utility, $breakpoint-name: null) {
+  $property-name: map.get($utility, 'property-name');
+  $property-values: map.get($utility, 'property-value');
+  $query-delimiter: if($breakpoint-name, map.get($utility, 'query-delimiter'), null);
+  $classes: map.get($utility, 'class');
+  $pre-selector: map.get($utility, 'pre-selector');
+  $post-selector: map.get($utility, 'post-selector');
+  $important: if(map.get($utility, 'important'), ' !important', '');
+
+  $i: 1;
+  @each $property-value in $property-values {
+    $class: list.nth($classes, $i);
+    $escaped-classname: string.escape-css-identifiers(#{$class}#{$query-delimiter}#{$breakpoint-name});
+
+    // e.g. mt:10@sm
+    #{$pre-selector}.#{$escaped-classname}#{$post-selector} {
+      #{$property-name}: #{$property-value}#{$important};
+    }
+
+    $i: $i + 1;
+  }
+}
+
+
+/// @param {Map}          $utility
+/// @param {String|null}  $breakpoint-name
+@mixin output-compound-utility($utility, $breakpoint-name: null) {
+  $query-delimiter: if($breakpoint-name, map.get($utility, 'query-delimiter'), null);
+  $class: map.get($utility, 'class');
+  $properties: map.get($utility, 'properties');
+  $pre-selector: map.get($utility, 'pre-selector');
+  $post-selector: map.get($utility, 'post-selector');
+  $important: if(map.get($utility, 'important'), ' !important', '');
+
+  // e.g. mt:10@sm
+  $escaped-classname: string.escape-css-identifiers(#{$class}#{$query-delimiter}#{$breakpoint-name});
+  #{$pre-selector}.#{$escaped-classname}#{$post-selector} {
+    @each $property-name, $property-value in $properties {
+      #{$property-name}: #{$property-value}#{$important};
+    }
+  }
+}
+
+
+/// Add simple utilities for building.
+/// @param {List} $utils - The utilities to be added.
+@mixin add-simple-utilities($utils...) {
+  @each $util in $utils {
+    @include add-simple-utility($util...);
+  }
+}
+
+/// Add fluid utilities for building.
+/// @param {List} $utils - The utilities to be added.
+@mixin add-fluid-utilities($utils...) {
+  @each $util in $utils {
+    @include add-fluid-utility($util...);
+  }
+}
+
+/// Add simple utilities for building.
+/// @param {List} $utils - The utilities to be added.
+@mixin add-compound-utilities($utils...) {
+  @each $util in $utils {
+    @include add-compound-utility($util...);
+  }
+}

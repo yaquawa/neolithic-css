@@ -1,0 +1,32 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "../mixins/add-range-utility" as *;
+
+$property-alias: ease !default;
+
+$property-value: [
+    'linear',
+    'cubic-bezier(0.4, 0, 1, 1)',
+    'cubic-bezier(0, 0, 0.2, 1)',
+    'cubic-bezier(0.4, 0, 0.2, 1)',
+    'cubic-bezier(0.69, -0.24, 0.41, 1)',
+    'cubic-bezier(0.46, 0, 0.35, 1.27)',
+    'cubic-bezier(0.69, -0.24, 0.35, 1.27)',
+] !default;
+
+$property-value-alias: [
+    'linear',
+    'in',
+    'out',
+    'in-out',
+    'in-back',
+    'out-back',
+    'in-out-back',
+] !default;
+
+@include add-simple-utility(
+    $property-name: transition-timing-function,
+    $property-name-alias: $property-alias,
+    $property-value: $property-value,
+    $property-value-alias: $property-value-alias,
+    $breakpoints: [],
+);

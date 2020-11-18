@@ -1,0 +1,11 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-name-alias: null !default;
+$property-values: [ none, text, all, auto ] !default;
+
+@include add-simple-utility(
+    $property-name: user-select,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $breakpoints: [],
+);

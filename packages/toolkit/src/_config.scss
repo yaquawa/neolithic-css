@@ -1,0 +1,25 @@
+@use "sass:map";
+@use "functions" as *;
+
+$breakpoints: (
+    xs: 320px,
+    sm: 550px,
+    md: 768px,
+    lg: 1024px,
+    xl: 1256px,
+    xxl: 1600px,
+) !default;
+
+
+$fluid: (
+    start-shrinking-width: default(map.get($breakpoints, lg), 1024px),
+    stop-shrinking-width: default(map.get($breakpoints, xs), 320px),
+    strip-unit: true,
+    step: 10px,
+    min: 0px,
+) !default;
+
+$property-name-delimiter: ':' !default;
+$query-delimiter: '@' !default;
+$mobile-first: true !default;
+$important: true !default;

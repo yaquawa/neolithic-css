@@ -1,0 +1,21 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "../mixins/add-range-utility" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
+
+$property-alias: delay !default;
+$from: 100 !default;
+$to: 1000 !default;
+$step: 50 !default;
+
+@include add-range-utility(
+    $from: $from,
+    $to: $to,
+    $step: $step,
+    $property-name: transition-delay,
+    $property-name-alias: $property-alias,
+    $property-value-alias: range($from, $to, $step),
+    $property-value-template: '_$i_ms',
+    $fluid: false,
+    $breakpoints: [],
+);
+

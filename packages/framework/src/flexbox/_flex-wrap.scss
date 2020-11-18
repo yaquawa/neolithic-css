@@ -1,0 +1,12 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-values: [ 'wrap', 'wrap-reverse', 'nowrap' ] !default;
+$property-name-alias: null !default;
+$property-value-alias: null !default;
+
+@include add-simple-utility(
+    $property-name: flex-wrap,
+    $property-value: $property-values,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: $property-value-alias,
+);

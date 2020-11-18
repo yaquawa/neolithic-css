@@ -1,0 +1,22 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
+
+$property-name-aliases: (
+    border-radius: 'border-radius',
+    border-top-left-radius: 'border-radius-tl',
+    border-top-right-radius: 'border-radius-tr',
+    border-bottom-right-radius: 'border-radius-br',
+    border-bottom-left-radius: 'border-radius-bl',
+) !default;
+$property-values: range(0px, 20px, 1px) !default;
+$property-value-aliases: range(0, 20, 1) !default;
+
+
+@each $property-name, $property-name-alias in $property-name-aliases {
+    @include add-simple-utility(
+        $property-name: $property-name,
+        $property-value: $property-values,
+        $property-name-alias: $property-name-alias,
+        $property-value-alias: $property-value-aliases,
+    );
+}
