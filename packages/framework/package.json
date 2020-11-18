@@ -2,7 +2,7 @@
   "name": "@neolithic-css/framework",
   "version": "1.0.0",
   "description": "CSS utilities framework written in Sass.",
-  "main": "src/_toolkit.scss",
+  "main": "src/_index.scss",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yaquawa/neolithic-css.git",
