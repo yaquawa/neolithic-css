@@ -1,5 +1,9 @@
 const mix = require('laravel-mix')
 
+mix.webpackConfig({
+  stats: 'minimal',
+})
+
 if (mix.inProduction()) {
   mix.options({
     processCssUrls: false,

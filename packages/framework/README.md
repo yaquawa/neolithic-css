@@ -61,7 +61,7 @@ For example:
 
 Only for some frequently used utilities use shortened class name.
 * background-color → `bg`
-* text-align, text-transform, vertical-align  → `t`
+* text-align, text-transform, text-decoration, vertical-align  → `t`
 * font-size, font-style, font-wight → `fz`, `fs`, `fw`
 * margin-top, margin-bottom, margin-left, margin-right  → `mt`, `mb`, `ml`, `mr`
 * padding-top, padding-bottom, padding-left, padding-right  → `pt`, `pb`, `pl`, `pr`

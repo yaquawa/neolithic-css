@@ -1,0 +1,31 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "../mixins/add-range-utility" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
+@use "../config/config";
+
+$property-name-alias: break !default;
+
+@include add-compound-utility(
+    $properties: (
+        overflow-wrap: normal,
+        word-break: normal,
+    ),
+    $class: $property-name-alias + config.$property-name-delimiter + 'normal',
+    $breakpoints: [],
+);
+
+@include add-simple-utility(
+    $property-name: overflow-wrap,
+    $property-value: break-word,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: words,
+    $breakpoints: [],
+);
+
+@include add-simple-utility(
+    $property-name: word-break,
+    $property-value: break-all,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: all,
+    $breakpoints: [],
+);

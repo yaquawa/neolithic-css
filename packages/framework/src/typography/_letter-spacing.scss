@@ -1,0 +1,21 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "../mixins/add-range-utility" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
+@use "~@neolithic-css/toolkit/src/functions/list";
+
+$property-name-alias: null !default;
+
+$from: -0.05em !default;
+$to: 0.2em !default;
+$step: 0.025em !default;
+
+@include add-range-utility(
+    $from: $from,
+    $to: $to,
+    $step: $step,
+    $property-name: letter-spacing,
+    $property-name-alias: $property-name-alias,
+    $property-value-alias: range(strip-unit($from), strip-unit($to), strip-unit($step)),
+    $fluid: false,
+    $breakpoints: [],
+);
