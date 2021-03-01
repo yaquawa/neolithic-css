@@ -1,5 +1,6 @@
 @use "~@neolithic-css/toolkit" as *;
 @use "../mixins/add-range-utility" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
 @use "~@neolithic-css/toolkit/src/functions/list";
 
 $property-names: [ padding, padding-top, padding-bottom, padding-left, padding-right ] !default;
