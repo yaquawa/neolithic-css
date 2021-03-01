@@ -17,6 +17,7 @@ $fluid: true !default;
     $to: $to,
     $step: $step,
     $property-name: $property-names,
+    $property-name-alias: $property-aliases,
     $property-value-alias: range(strip-unit($from), strip-unit($to), strip-unit($step)),
     $fluid: false,
 );
