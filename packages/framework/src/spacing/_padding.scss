@@ -16,9 +16,20 @@ $fluid: true !default;
     $to: $to,
     $step: $step,
     $property-name: $property-names,
-    $property-name-alias: $property-aliases,
-    $fluid: $fluid,
+    $property-value-alias: range(strip-unit($from), strip-unit($to), strip-unit($step)),
+    $fluid: false,
 );
+
+@if $fluid {
+    @include add-range-utility(
+        $from: $from,
+        $to: $to,
+        $step: $step,
+        $property-name: $property-names,
+        $property-name-alias: $property-aliases,
+        $fluid: true,
+    );
+}
 
 @each $index, $property-name in list.to-map($property-names) {
     @include add-simple-utility(
