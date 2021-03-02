@@ -1,0 +1,15 @@
+@use "~@neolithic-css/toolkit" as *;
+
+$property-values: [ 'auto', 'hidden', 'visible', 'scroll' ] !default;
+$property-names: [ 'overflow', 'overflow-x', 'overflow-y' ] !default;
+$property-name-alias: null !default;
+$property-value-alias: null !default;
+
+@each $property-name in $property-names {
+  @include add-simple-utility(
+      $property-name: $property-name,
+      $property-value: $property-values,
+      $property-name-alias: $property-name-alias,
+      $property-value-alias: $property-value-alias,
+  );
+}
