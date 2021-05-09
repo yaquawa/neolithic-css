@@ -60,15 +60,15 @@ For example:
 ```
 
 Only for some frequently used utilities use shortened class name.
-* background-color → `bg`
-* text-align, text-transform, text-decoration, vertical-align  → `t`
-* font-size, font-style, font-wight → `fz`, `fs`, `fw`
-* margin-top, margin-bottom, margin-left, margin-right  → `mt`, `mb`, `ml`, `mr`
-* padding-top, padding-bottom, padding-left, padding-right  → `pt`, `pb`, `pl`, `pr`
+* `background-color` → `bg`
+* `text-align`, `text-transform`, `text-decoration`, `vertical-align`  → `t`
+* `font-size`, `font-style`, `font-wight` → `fz`, `fs`, `fw`
+* `margin-top`, `margin-bottom`, `margin-left`, `margin-right`  → `mt`, `mb`, `ml`, `mr`
+* `padding-top`, `padding-bottom`, `padding-left`, `padding-right`  → `pt`, `pb`, `pl`, `pr`
 
 You can change the class name by set the `property-name-alias` option for each module.
 
-See [here](https://github.com/yaquawa/neolithic-css.git/packages/toolkit/README.md#naming-convention) to understand the core concept of neolithic-css's naming convention.
+See [here](https://github.com/yaquawa/neolithic-css/tree/master/packages/toolkit#naming-convention) to understand the core concept of neolithic-css's naming convention.
 
 ### Fluid utility
 ***Fluid utility*** utilizes the `calc()` function to automatically change a CSS property from one value to another according to the viewport width.
@@ -84,7 +84,7 @@ The above example indicates:
 * change `margin-bottom` from `90px` to `20px` automatically
 
 By default, the value changes from breakpoint `lg` to `xs`.  
-You can set the range via the `start-shrinking-width` and `start-shrinking-width` in `$fluid` option.
+You can set the range via the `start-shrinking-width` and `stop-shrinking-width` in `$fluid` option.
 
 ### Breakpoint utility
 By using breakpoint utilities, you can apply a utility conditionally at different breakpoints. 
