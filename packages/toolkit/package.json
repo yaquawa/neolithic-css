@@ -1,6 +1,6 @@
 {
   "name": "@neolithic-css/toolkit",
-  "version": "1.3.11",
+  "version": "1.4.0",
   "description": "CSS utilities generation toolkit written in Sass.",
   "main": "src/_toolkit.scss",
   "repository": {
