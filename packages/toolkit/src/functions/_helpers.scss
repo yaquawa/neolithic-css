@@ -1,3 +1,4 @@
+@use "sass:math";
 @use "sass:map";
 @use "sass:list";
 @use "sass:meta";
@@ -10,7 +11,7 @@
 
 // function to strip units
 @function strip-unit($number) {
-  @return $number / ($number * 0 + 1);
+  @return math.div($number, $number * 0 + 1);
 }
 
 // Compose a map from keys and values

@@ -162,7 +162,7 @@
   $large: ();
 
   @if list.length($list) > 1 {
-    $seed: list.nth($list, math.ceil(list.length($list) / 2));
+    $seed: list.nth($list, math.ceil(math.div(list.length($list), 2)));
     $separator: list.separator($list);
 
     @each $item in $list {
