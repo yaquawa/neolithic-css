@@ -1,11 +1,11 @@
 @use "~@neolithic-css/toolkit" as *;
 
-$property-name-alias: 'w' !default;
+$property-name-alias: 'h' !default;
 $property-values: [ '0', '25%', '50%', '75%', '100%', 'auto' ] !default;
 $property-value-alias: null !default;
 
 @include add-simple-utility(
-    $property-name: width,
+    $property-name: height,
     $property-value: $property-values,
     $property-name-alias: $property-name-alias,
     $property-value-alias: $property-value-alias,
