@@ -8,16 +8,16 @@
     "production": "cross-env NODE_ENV=production mix --mix-config webpack.mix.js --production"
   },
   "devDependencies": {
-    "lerna": "^3.22.1",
-    "prettier": "^2.2.1",
     "@hail2u/css-mqpacker": "^8.0.1",
     "browser-sync": "^2.26.13",
     "browser-sync-webpack-plugin": "^2.3.0",
     "cross-env": "^7.0",
     "laravel-mix": "^6.0.2",
+    "lerna": "^3.22.1",
+    "postcss": "^8.2.1",
+    "prettier": "^2.2.1",
     "resolve-url-loader": "^3.1.2",
-    "sass": "^1.30.0",
-    "sass-loader": "^10.1.0",
-    "postcss": "^8.2.1"
+    "sass": "^1.35.0",
+    "sass-loader": "^12.1.0"
   }
 }

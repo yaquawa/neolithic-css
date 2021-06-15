@@ -1,0 +1,25 @@
+@use "~@neolithic-css/toolkit" as *;
+@use "../mixins/add-range-utility" as *;
+@use "~@neolithic-css/toolkit/src/functions" as *;
+@use "../config/config";
+
+$property-name-alias: rotate !default;
+$from: 0 !default;
+$to: 360 !default;
+$step: 45 !default;
+
+@each $coordinate in [ 'x', 'y', 'z' ] {
+  @include add-simple-utility(
+      $property-name: --transform-rotate-#{$coordinate},
+      $property-value: range($from, $to, $step, '_$i_deg'),
+      $property-name-alias: $property-name-alias + '-' + $coordinate,
+      $breakpoints: [],
+  );
+}
+
+@include add-simple-utility(
+    $property-name: --transform-rotate-z,
+    $property-value: range($from, $to, $step, '_$i_deg'),
+    $property-name-alias: $property-name-alias,
+    $breakpoints: [],
+);

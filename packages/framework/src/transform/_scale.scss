@@ -3,20 +3,16 @@
 @use "~@neolithic-css/toolkit/src/functions" as *;
 @use "../config/config";
 
-$property-alias: scale !default;
+$property-name-alias: scale !default;
 $from: 0 !default;
 $to: 1.5 !default;
 $step: 0.1 !default;
 
 @each $coordinate in [ 'x', 'y' ] {
-    @include add-range-utility(
-        $from: $from,
-        $to: $to,
-        $step: $step,
+    @include add-simple-utility(
         $property-name: --transform-scale-#{$coordinate},
-        $property-name-alias: $property-alias + '-' + $coordinate,
-        $property-value-alias: range($from * 100, $to * 100, $step * 100),
-        $fluid: false,
+        $property-value: range($from * 100, $to * 100, $step * 100),
+        $property-name-alias: $property-name-alias + '-' + $coordinate,
         $breakpoints: [],
     );
 }
@@ -27,7 +23,7 @@ $step: 0.1 !default;
             --transform-scale-x: $property-value,
             --transform-scale-y: $property-value,
         ),
-        $class: $property-alias + config.$property-name-delimiter + $property-value * 100,
+        $class: $property-name-alias + config.$property-name-delimiter + $property-value * 100,
         $breakpoints: [],
     );
 }
