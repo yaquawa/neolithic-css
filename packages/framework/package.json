@@ -1,6 +1,6 @@
 {
   "name": "@neolithic-css/framework",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "CSS utilities framework written in Sass.",
   "main": "src/_index.scss",
   "repository": {
