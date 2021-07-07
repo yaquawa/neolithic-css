@@ -1,7 +1,7 @@
 @use "~@neolithic-css/toolkit" as *;
 
 $property-name-alias: 'w' !default;
-$property-values: [ '0', '25%', '50%', '75%', '100%', 'auto' ] !default;
+$property-values: [ '0', '25%', '50%', '75%', '100%', 'auto', 'fit-content', 'max-content', 'min-content' ] !default;
 $property-value-alias: null !default;
 
 @include add-simple-utility(
