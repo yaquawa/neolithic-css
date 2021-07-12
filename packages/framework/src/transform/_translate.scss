@@ -4,8 +4,8 @@
 @use "../config/config";
 
 $property-name-alias: translate !default;
-$from: 0 !default;
-$to: 120 !default;
+$from: -110 !default;
+$to: 110 !default;
 $step: 10 !default;
 
 @each $coordinate in [ 'x', 'y', 'z' ] {
